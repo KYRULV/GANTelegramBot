@@ -17,6 +17,18 @@ def start(message):
     players[cur_player_id] = Player.Player()
     players[cur_player_id].wished_number = wish_a_number()
     bot.send_message(message.chat.id, "Привет, я телеграмм бот который загадывает числа")
-    bot.send_message(message.chat.id, players[cur_player_id].wished_number)
+
+def message_filter(message):
+    return True 
+
+@bot.message_handler(func=message_filter) 
+def on_message(message):
+    guessed_number = int(message.text)
+    cur_player_id = message.from_user.id
+    wished_number = players[cur_player_id].wished_number
+    if wished_number == guessed_number:
+        bot.send_message(message.chat.id, "Молодец, правильно угаданое число")
+    else:
+        bot.send_message(message.chat.id, "Неверное число, попробуй снова")
 
 bot.infinity_polling()
