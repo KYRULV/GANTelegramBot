@@ -23,7 +23,10 @@ def message_filter(message):
 
 @bot.message_handler(func=message_filter) 
 def on_message(message):
-    guessed_number = int(message.text)
+    try:
+        guessed_number = int(message.text)
+    except:
+        bot.send_message(message.chat.id, "Введите число")
     cur_player_id = message.from_user.id
     wished_number = players[cur_player_id].wished_number
     if wished_number == guessed_number:
